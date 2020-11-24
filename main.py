@@ -11,7 +11,7 @@ import time
 # To use the transformers library you need to install pytorch.
 # Follow instruction via this link: https://pytorch.org/
 # For windows without CUDA: pip install torch==1.7.0+cpu torchvision==0.8.1+cpu torchaudio===0.7.0 -f https://download.pytorch.org/whl/torch_stable.html
-# from transformers import T5ForConditionalGeneration, T5Tokenizer
+from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 
 # Command example for twint outside python script.
@@ -125,36 +125,36 @@ if add_search:
         df['cleaned_tweets'] = df['cleaned_tweets'].str.rstrip().str.lstrip()
         s = '.'.join(df.loc[:, 'cleaned_tweets'])
 
-        # # Example NLP with transformers (transformer + pytorch)
-        # # initialize the model architecture and weights
-        # model = T5ForConditionalGeneration.from_pretrained("t5-small")
+        # Example NLP with transformers (transformer + pytorch)
+        # initialize the model architecture and weights
+        model = T5ForConditionalGeneration.from_pretrained("t5-small")
 
-        # # initialize the model tokenizer
-        # tokenizer = T5Tokenizer.from_pretrained("t5-small")
+        # initialize the model tokenizer
+        tokenizer = T5Tokenizer.from_pretrained("t5-small")
 
-        # inputs = tokenizer.encode(
-        #     "summarize: " + s, return_tensors="pt", max_length=512, truncation=True)
+        inputs = tokenizer.encode(
+            "summarize: " + s, return_tensors="pt", max_length=512, truncation=True)
 
-        # # generate the summarization output
-        # outputs = model.generate(
-        #     inputs,
-        #     max_length=150,
-        #     min_length=40,
-        #     length_penalty=2.0,
-        #     num_beams=4,
-        #     early_stopping=True)
-        # st.write(tokenizer.decode(outputs[0]))
+        # generate the summarization output
+        outputs = model.generate(
+            inputs,
+            max_length=150,
+            min_length=40,
+            length_penalty=2.0,
+            num_beams=4,
+            early_stopping=True)
+        st.write(tokenizer.decode(outputs[0]))
 
 
 #### Extra streamlit for info ####
 # Add drop down menu
-# add_selectbox = st.sidebar.selectbox(
-    # 'How would you like to be contacted?',
-    # ('Twitter', 'Mail', 'Mobile phone')
-# )
+add_selectbox = st.sidebar.selectbox(
+    'How would you like to be contacted?',
+    ('Twitter', 'Mail', 'Mobile phone')
+)
 
 # Add a slider to the sidebar:
-# add_slider = st.sidebar.slider(
-    # 'Select a range of values',
-    # 0.0, 100.0, (25.0, 75.0)
-# )
+add_slider = st.sidebar.slider(
+    'Select a range of values',
+    0.0, 100.0, (25.0, 75.0)
+)
