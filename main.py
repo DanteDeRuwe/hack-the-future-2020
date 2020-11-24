@@ -36,8 +36,8 @@ def remove_content(text):
     """Clean up text by removing urls, mentions & hashtags"""
     text = re.sub(r"http\S+", "", text)  # remove urls
     text = re.sub(r'\S+\.com\S+', '', text)  # remove urls
-    text = re.sub(r'\@\w+', '', text)  # remove mentions
-    text = re.sub(r'\#\w+', '', text)  # remove hashtags
+    text = re.sub(r'\@', '', text)  # remove mentions
+    text = re.sub(r'\#', '', text)  # remove hashtags
     return text
 
 
