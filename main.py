@@ -93,8 +93,9 @@ if st.sidebar.button("Analyze!") and party_select:
 
     start = time.time()
 
+    getting_tweets_msg = st.empty()
+    getting_tweets_msg.info("Getting Tweets for " + party_select + "...")
 
-    print('Searching now...')
     # Config Twint
     c = twint.Config()
     c.Limit = 50
@@ -107,13 +108,18 @@ if st.sidebar.button("Analyze!") and party_select:
 
     data = []
     politicians = [p for p in open("politicians/" + str(party_select), "r")]
+    twitterlinks=[]
     for politician in politicians:
         c.Username = get_username_from_handle(politician)
+        twitterlinks.append("https://twitter.com/"+ c.Username)
         print("getting " + c.Username)
         twint.run.Search(c)
         data.append(twint.storage.panda.Tweets_df)
 
     df = pd.concat(data)
+
+
+
     if len(df) > 1:
         df['date'] = pd.to_datetime(df['date'])
 
@@ -126,12 +132,8 @@ if st.sidebar.button("Analyze!") and party_select:
         df['num_mentions'] = df['tweet'].apply(lambda x: len(get_mentions(x)))
         df['hour'] = df['date'].dt.hour
 
-        # # Example plot: hour vs length
-        # df_HL = df[["hour", "length"]]
-        # df_HL = df_HL.groupby(['hour']).mean()
-        # st.bar_chart(data=df_HL, width=0, height=0, use_container_width=True)
-
-        # Example plot: top 10 hashtags
+        getting_tweets_msg.empty()
+        st.markdown("## Top 10 Hashtags used by" + party_select)
         hashes = df['hashtags'].tolist()
         tags = []
         for x in hashes:
@@ -141,7 +143,8 @@ if st.sidebar.button("Analyze!") and party_select:
         st.bar_chart(data=df_tags['hashtag'].value_counts().head(
             10), width=0, height=0, use_container_width=True)
 
-        st.write("Summarizing tweets from: " + ', '.join(politicians))
+        summarizing_msg = st.empty()
+        summarizing_msg.info("Summarizing tweets from: " + ', '.join(politicians) + "...")
 
         s = remove_content('.'.join(df['tweet']))
 
@@ -154,7 +157,15 @@ if st.sidebar.button("Analyze!") and party_select:
         from summarizer import Summarizer
 
         model = Summarizer(custom_model=custom_model, custom_tokenizer=custom_tokenizer)
-        output = model(s, min_length=15, max_length=40)
-        st.write(''.join(output))
+        output = model(s, min_length=15, max_length=25)
+        st.markdown("## " + party_select + "\'s tweet summary")
+        st.markdown("> " + ''.join(output))
+
+        summarizing_msg.empty()
+
+        links=["["+pol+"]("+link+")" for pol, link in zip(politicians, twitterlinks)]
+        st.markdown("<br><br><br><small><em>Based on tweets by " +
+                    ', '.join(links)
+                    + "</em></small>", unsafe_allow_html=True)
 
         print(time.time() - start)
