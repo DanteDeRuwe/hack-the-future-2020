@@ -89,7 +89,7 @@ end_date = end_date.strftime('%Y-%m-%d')
 def get_username_from_handle(handle):
     return handle.replace("@", "").strip()
 
-if st.button("Go!") and party_select:
+if st.sidebar.button("Analyze!") and party_select:
 
     start = time.time()
 
