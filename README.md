@@ -1,4 +1,3 @@
-
 # Hack The Future 2020 (AI Application Challenge)
 <img height="100px" src="https://i.imgur.com/9jy03IT.png"/>&nbsp;&nbsp;&nbsp;<img height="100px" src="https://i.imgur.com/IxJEaZH.png"/>
 <br>
@@ -50,6 +49,10 @@ To use the transformers library you need to install [PyTorch](https://pytorch.or
 streamlit run main.py
 ```
 
+## Screenshot
+![](https://i.imgur.com/pb7pKzB.png)
+
+
 ## Contributors
 - [Liam Spitaels](https://github.com/liamspitaels)
 - [Dante De Ruwe](https://github.com/dantederuwe)
@@ -62,4 +65,3 @@ Special thanks to Jean-Joseph Adjizian, Reinert Roux and Peter Boschmans and the
 - [hack The Future](https://hackthefuture.be)
 - [De Cronos Groep](https://cronos-groep.be/)
 - [XploData](https://xplodata.be/)
-
